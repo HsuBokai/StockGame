@@ -20,10 +20,7 @@
 	grid-gap: 10px;
 }
 #myCanvas {
-	width: 1000px;
-	height: 400px;
-	background-color: gray;
-	float: left;
+	background-color: #cccccc;
 }
 .btn-next {
 	border-radius: 50%;
@@ -31,17 +28,24 @@
 	height: 50px;
 	background-color: blue;
 	margin: 5px;
-	float: left;
+}
+.info-stock {
+	width: 120px;
+	height: 40px;
+	text-align: center;
+	display: inline-block;
+	margin-right: 10px;
+	margin-left: 10px;
 }
 .btn-buy {
 	background-color: #cc0011;
 	cursor: pointer;
-	width: 100px;
-	height: 30px;
+	width: 60px;
+	height: 40px;
 	text-align: center;
 	font-size: 1rem;
-	display: inline-block;
-	margin-right: 10px;
+	float: left;
+	margin-left: 10px;
 }
 .btn-buy:hover {
 	background-color: #ff0011;
@@ -49,15 +53,18 @@
 .btn-sell {
 	background-color: #00cc11;
 	cursor: pointer;
-	width: 100px;
-	height: 30px;
+	width: 60px;
+	height: 40px;
 	text-align: center;
 	font-size: 1rem;
-	display: inline-block;
+	float: left;
 	margin-right: 10px;
 }
 .btn-sell:hover {
 	background-color: #00ff11;
+}
+.info-money {
+	font-size: 2rem;
 }
 </style>
 </head>
@@ -65,15 +72,20 @@
 <div id="app">
 	<div class="grid-container">
 		<div class="grid-price">
-			<canvas id="myCanvas"></canvas>
+			<canvas id="myCanvas" width="1000" height="400"></canvas>
 			<div class="btn-next" @click="nextStep"></div>
 		</div>
 		<div class="grid-info">
-			INFO
+			<div class="info-money"> Money : {{money}} </div>
 		</div>
 		<div class="grid-action">
-			<div><div class="btn-buy" v-for="(val, key) in stock_buy_price"> Buy {{key}}: {{val}} </div></div>
-			<div><div class="btn-sell" v-for="(val, key) in stock_sell_price"> Sell {{key}}: {{val}}</div></div>
+			<div class="info-stock" v-for="stock in stock_list" v-bind:style="{backgroundColor:stock.color}">
+				{{stock.name}}
+			</div>
+			<div v-for="stock in stock_list">
+				<div class="btn-buy">B:{{stock.price}}</div>
+				<div class="btn-sell">S:{{stock.price - 1}}</div>
+			</div>
 		</div>
 	</div>
 </div>
