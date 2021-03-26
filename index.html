@@ -17,10 +17,12 @@
 	grid-template-areas:
 		'price info'
 		'action info';
-	grid-gap: 10px;
+	grid-gap: 10px 10px;
 }
 #myCanvas {
 	background-color: #cccccc;
+	width: 100%;
+	height: 100%;
 }
 .btn-next {
 	border-radius: 50%;
@@ -66,25 +68,59 @@
 .info-money {
 	font-size: 2rem;
 }
+table {
+	border-top: 1px solid #ddd;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+}
+th,td {
+	border-bottom: 1px solid #ccc;
+	line-height: 1.2;
+	text-align: left;
+	padding: 0.5rem;
+}
+th {
+	background: #F5F7Fb;
+	font-size: 0.8em;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
 </style>
 </head>
 <body>
 <div id="app">
 	<div class="grid-container">
-		<div class="grid-price">
-			<canvas id="myCanvas" width="1000" height="400"></canvas>
-			<div class="btn-next" @click="nextStep"></div>
+		<div id="GridPrice" class="grid-price">
+			<canvas id="myCanvas" @click="nextStep"></canvas>
 		</div>
 		<div class="grid-info">
 			<div class="info-money"> Money : {{money}} </div>
+			<table>
+				<tbody>
+					<tr>
+						<th>Name</th>
+						<th>Count</th>
+						<th>Cost</th>
+						<th>Profit</th>
+					</tr>
+					<tr v-for="hold in hold_list">
+						<td>{{hold.name}}</td>
+						<td>{{hold.count}}</td>
+						<td>{{hold.cost_avg}}</td>
+						<td>{{hold.profit}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="info-money"> Total Asset : {{asset}} </div>
 		</div>
 		<div class="grid-action">
 			<div class="info-stock" v-for="stock in stock_list" v-bind:style="{backgroundColor:stock.color}">
 				{{stock.name}}
 			</div>
 			<div v-for="stock in stock_list">
-				<div class="btn-buy">B:{{stock.price}}</div>
-				<div class="btn-sell">S:{{stock.price - 1}}</div>
+				<div class="btn-buy" @click="doBuy(stock.name)">B:{{stock.price}}</div>
+				<div class="btn-sell" @click="doSell(stock.name)">S:{{stock.price - 1}}</div>
 			</div>
 		</div>
 	</div>
