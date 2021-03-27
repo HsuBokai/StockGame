@@ -9,7 +9,7 @@ const app = createApp({
 				{
 					name : 'TSMC',
 					price : 10,
-					color : '#555555',
+					color : '#777777',
 				},
 				{
 					name : 'HTC',
@@ -20,6 +20,26 @@ const app = createApp({
 					name : 'MTK',
 					price : 10,
 					color : '#55cc55',
+				},
+				{
+					name : 'AAPL',
+					price : 10,
+					color : '#cc5555',
+				},
+				{
+					name : 'GOOG',
+					price : 10,
+					color : '#aaaa55',
+				},
+				{
+					name : 'FB',
+					price : 10,
+					color : '#cc55cc',
+				},
+				{
+					name : 'AMZN',
+					price : 10,
+					color : '#55cccc',
 				},
 			],
 			hold_list : [],
@@ -46,11 +66,21 @@ const app = createApp({
 			for (var i=0; i < this.stock_list.length; ++i) {
 				var stock = this.stock_list[i];
 				var oldPrice = stock.price;
-				var r = Math.random();
-				if(r*2 < 1){
+				var r = Math.random() * 7;
+				if(r < 1){
+					stock.price += 3;
+				} else if(r < 2){
+					stock.price += 2;
+				} else if(r < 3){
 					stock.price += 1;
-				} else {
+				} else if(r < 4){
+					stock.price += 1;
+				} else if(r < 5){
 					stock.price -= 1;
+				} else if(r < 6){
+					stock.price -= 2;
+				} else {
+					stock.price -= 3;
 				}
 				var newStep = this.timeStep;
 				var newPrice = stock.price;
@@ -83,7 +113,7 @@ const app = createApp({
 				for (var i=0; i < this.stock_list.length; ++i) {
 					if (this.hold_list[index].name === this.stock_list[i].name) {
 						var p = this.stock_list[i].price;
-						a += this.hold_list[index].count * p;
+						a += this.hold_list[index].count * (p-1);
 						break;
 					}
 				}
