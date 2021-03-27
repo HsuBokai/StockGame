@@ -113,6 +113,7 @@ th {
 				</tbody>
 			</table>
 			<div class="info-money"> Total Asset : {{asset}} </div>
+			<div class="info-money"> Time Step : {{timeStep}} </div>
 		</div>
 		<div class="grid-action">
 			<div class="info-stock" v-for="stock in stock_list" v-bind:style="{backgroundColor:stock.color}">
@@ -120,7 +121,7 @@ th {
 			</div>
 			<div v-for="stock in stock_list">
 				<div class="btn-buy" @click="doBuy(stock.name)">B:{{stock.price}}</div>
-				<div class="btn-sell" @click="doSell(stock.name)">S:{{stock.price - 1}}</div>
+				<div class="btn-sell" @click="doSell(stock.name)">S:{{stock.price - fee}}</div>
 			</div>
 		</div>
 	</div>

@@ -4,46 +4,50 @@ const app = createApp({
 		return {
 			context: null,
 			timeStep: 0,
-			money: 100,
 			stock_list : [
 				{
 					name : 'TSMC',
-					price : 10,
+					price : 50,
 					color : '#777777',
 				},
 				{
 					name : 'HTC',
-					price : 10,
+					price : 45,
 					color : '#5555ff',
 				},
 				{
 					name : 'MTK',
-					price : 10,
+					price : 40,
 					color : '#55cc55',
 				},
 				{
 					name : 'AAPL',
-					price : 10,
+					price : 35,
 					color : '#cc5555',
 				},
 				{
 					name : 'GOOG',
-					price : 10,
+					price : 30,
 					color : '#aaaa55',
 				},
 				{
 					name : 'FB',
-					price : 10,
+					price : 25,
 					color : '#cc55cc',
 				},
 				{
 					name : 'AMZN',
-					price : 10,
+					price : 20,
 					color : '#55cccc',
 				},
 			],
 			hold_list : [],
-			asset: 100,
+			money: 300,
+			asset: 300,
+			fee: 0,
+			canvas_width: 600,
+			canvas_height: 400,
+			game_status : 'init',
 		}
 	},
 	created () {
@@ -52,8 +56,8 @@ const app = createApp({
 	mounted () {
 		console.log('mounted');
 		var c = document.getElementById("myCanvas");
-		c.width = 1000;
-		c.height = 400;
+		c.width = this.canvas_width;
+		c.height = this.canvas_height;
 		this.context = c.getContext('2d');
 	},
 	unmounted () {
@@ -84,10 +88,12 @@ const app = createApp({
 				}
 				var newStep = this.timeStep;
 				var newPrice = stock.price;
-				this.drawLine(oldStep*2, 400-oldPrice*10, newStep*2, 400-newPrice*10, stock.color);
+				var h = this.canvas_height;
+				this.drawLine(oldStep*3, h-oldPrice*3, newStep*3, h-newPrice*3, stock.color);
 			}
 			this.updateAsset();
 			this.updateProfit();
+			setTimeout(this.nextStep, 1*1000);
 		},
 		drawLine (x1,y1,x2,y2,color) {
 			this.context.beginPath();
@@ -113,7 +119,7 @@ const app = createApp({
 				for (var i=0; i < this.stock_list.length; ++i) {
 					if (this.hold_list[index].name === this.stock_list[i].name) {
 						var p = this.stock_list[i].price;
-						a += this.hold_list[index].count * (p-1);
+						a += this.hold_list[index].count * (p-this.fee);
 						break;
 					}
 				}
@@ -182,9 +188,9 @@ const app = createApp({
 			if (0 === this.hold_list[index].count) {
 				return;
 			}
-			this.money += (p-1);
+			this.money += (p-this.fee);
 			this.hold_list[index].count -= 1;
-			this.hold_list[index].cost_sum -= (p-1);
+			this.hold_list[index].cost_sum -= (p-this.fee);
 			this.hold_list[index].cost_avg = this.getCostAvg(index);
 			this.hold_list[index].profit = this.getProfit(index, p);
 			this.updateAsset();
