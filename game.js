@@ -33,7 +33,7 @@ const app = createApp({
 				{
 					name : 'FB',
 					price : 30,
-					color : '#cc55cc',
+					color : 'yellow',
 				},
 				{
 					name : 'AMZN',
@@ -43,12 +43,12 @@ const app = createApp({
 				{
 					name : 'NFLX',
 					price : 20,
-					color : '#aaaaaa',
+					color : '#cc55cc',
 				},
 				{
 					name : 'TSLA',
 					price : 15,
-					color : 'yellow',
+					color : '#aaaaaa',
 				},
 			],
 			hold_list : [],
@@ -57,7 +57,7 @@ const app = createApp({
 			fee: 0,
 			canvas_width: 600,
 			canvas_height: 400,
-			game_status : 'init',
+			game_status : 'pause',
 		}
 	},
 	created () {
@@ -68,13 +68,36 @@ const app = createApp({
 		var c = document.getElementById("myCanvas");
 		c.width = this.canvas_width;
 		c.height = this.canvas_height;
+		c.addEventListener("mousedown", this.clickCanvas);
 		this.context = c.getContext('2d');
+		this.drawPlayBtn();
 	},
 	unmounted () {
 		console.log('unmounted');
 	},
 	methods: {
+		clickCanvas (e) {
+			var x = e.pageX-10;
+			var y = e.pageY-10;
+			console.log(x,y);
+			if (25-17 < x && x < 25+17 && 20-17 < y && y < 20+17) {
+				switch (this.game_status) {
+					case 'pause':
+						this.drawPauseBtn();
+						this.game_status = 'play'
+						setTimeout(this.nextStep, 1*1000);
+						break;
+					case 'play':
+						this.drawPlayBtn();
+						this.game_status = 'pause'
+						break;
+				}
+			}
+		},
 		nextStep () {
+			if ('play' !== this.game_status) {
+				return;
+			}
 			var diff = [3,-3,2,-2,1,-1,0,0,1];
 			var l = diff.length;
 			var oldStep = this.timeStep;
@@ -93,7 +116,7 @@ const app = createApp({
 			}
 			this.updateAsset();
 			this.updateProfit();
-			if (this.timeStep < 100) setTimeout(this.nextStep, 1*1000);
+			setTimeout(this.nextStep, 1*1000);
 		},
 		drawLine (x1,y1,x2,y2,color) {
 			this.context.beginPath();
@@ -102,6 +125,42 @@ const app = createApp({
 			this.context.lineWidth = 2;
 			this.context.strokeStyle = color;
 			this.context.stroke();
+		},
+		drawCircle (x,y,r) {
+			this.context.fillStyle = '#FFBF00';
+			this.context.arc(x, y, r, 0, 2*Math.PI, false);
+			this.context.fill();
+		},
+		drawPlayBtn () {
+			this.context.fillStyle = '#cccccc';
+			this.context.fillRect(0,0,45,40);
+			this.context.fillStyle = 'black';
+			this.context.beginPath();
+			this.context.moveTo(20, 10);
+			this.context.lineTo(20, 30);
+			this.context.lineTo(35, 20);
+			this.context.lineTo(20, 10);
+			this.context.fill();
+			this.drawCircle(25, 20, 17);
+		},
+		drawPauseBtn () {
+			this.context.fillStyle = '#cccccc';
+			this.context.fillRect(0,0,45,40);
+			this.context.fillStyle = 'black';
+			this.context.beginPath();
+			this.context.moveTo(20, 10);
+			this.context.lineTo(20, 30);
+			this.context.lineTo(23, 30);
+			this.context.lineTo(23, 10);
+			this.context.lineTo(20, 10);
+			this.context.fill();
+			this.context.moveTo(27, 10);
+			this.context.lineTo(27, 30);
+			this.context.lineTo(30, 30);
+			this.context.lineTo(30, 10);
+			this.context.lineTo(27, 10);
+			this.context.fill();
+			this.drawCircle(25, 20, 17);
 		},
 		updateProfit () {
 			for (var index = 0; index < this.hold_list.length; ++index) {
@@ -139,6 +198,9 @@ const app = createApp({
 			}
 		},
 		doBuy (stock_name) {
+			if ('pause' !== this.game_status) {
+				return;
+			}
 			for (var i=0; i < this.stock_list.length; ++i) {
 				if (stock_name === this.stock_list[i].name) {
 					var p = this.stock_list[i].price;
@@ -170,6 +232,9 @@ const app = createApp({
 			this.updateAsset();
 		},
 		doSell (stock_name) {
+			if ('pause' !== this.game_status) {
+				return;
+			}
 			for (var i=0; i < this.stock_list.length; ++i) {
 				if (stock_name === this.stock_list[i].name) {
 					var p = this.stock_list[i].price;

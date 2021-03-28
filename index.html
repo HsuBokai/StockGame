@@ -40,10 +40,12 @@
 	margin-left: 10px;
 }
 .btn-buy {
-	background-color: #cc0011;
+	border-color: #ff0011;
+	border-width: 3px;
+	border-style:solid;
 	cursor: pointer;
-	width: 60px;
-	height: 40px;
+	width: 54px;
+	height: 34px;
 	text-align: center;
 	font-size: 1rem;
 	float: left;
@@ -53,10 +55,12 @@
 	background-color: #ff0011;
 }
 .btn-sell {
-	background-color: #00cc11;
+	border-color: #00ff11;
+	border-width: 3px;
+	border-style:solid;
 	cursor: pointer;
-	width: 60px;
-	height: 40px;
+	width: 54px;
+	height: 34px;
 	text-align: center;
 	font-size: 1rem;
 	float: left;
@@ -92,7 +96,7 @@ th {
 <div id="app">
 	<div class="grid-container">
 		<div id="GridPrice" class="grid-price">
-			<canvas id="myCanvas" @click="nextStep"></canvas>
+			<canvas id="myCanvas"></canvas>
 		</div>
 		<div class="grid-info">
 			<div class="info-money"> Money : $ {{money}} 萬元 </div>
@@ -113,7 +117,7 @@ th {
 				</tbody>
 			</table>
 			<div class="info-money"> Total Asset : $ {{asset}} 萬元 </div>
-			<div class="info-money"> Time Step : {{timeStep}} </div>
+			<div class="info-money"> Time Step : {{timeStep}} 天 </div>
 		</div>
 		<div class="grid-action">
 			<div class="info-stock" v-for="stock in stock_list" v-bind:style="{backgroundColor:stock.color}">
