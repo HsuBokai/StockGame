@@ -16,7 +16,7 @@
 	display: grid;
 	grid-template-areas:
 		'price info'
-		'action info';
+		'action action';
 	grid-gap: 10px 10px;
 }
 #myCanvas {
@@ -95,7 +95,7 @@ th {
 			<canvas id="myCanvas" @click="nextStep"></canvas>
 		</div>
 		<div class="grid-info">
-			<div class="info-money"> Money : {{money}} </div>
+			<div class="info-money"> Money : $ {{money}} 萬元 </div>
 			<table>
 				<tbody>
 					<tr>
@@ -112,7 +112,7 @@ th {
 					</tr>
 				</tbody>
 			</table>
-			<div class="info-money"> Total Asset : {{asset}} </div>
+			<div class="info-money"> Total Asset : $ {{asset}} 萬元 </div>
 			<div class="info-money"> Time Step : {{timeStep}} </div>
 		</div>
 		<div class="grid-action">
