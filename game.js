@@ -8,7 +8,7 @@ const app = createApp({
 				{
 					name : 'TSMC',
 					price : 55,
-					color : '#777777',
+					color : '#999999',
 				},
 				{
 					name : 'HTC',
@@ -48,7 +48,7 @@ const app = createApp({
 				{
 					name : 'TSLA',
 					price : 15,
-					color : '#aaaaaa',
+					color : '#555555',
 				},
 			],
 			hold_list : [],
@@ -57,6 +57,7 @@ const app = createApp({
 			fee: 0,
 			canvas_width: 600,
 			canvas_height: 400,
+			canvas_zero: 300,
 			game_status : 'pause',
 		}
 	},
@@ -65,12 +66,16 @@ const app = createApp({
 	},
 	mounted () {
 		console.log('mounted');
-		var c = document.getElementById("myCanvas");
+		var c = document.getElementById('canvas-price');
 		c.width = this.canvas_width;
 		c.height = this.canvas_height;
-		c.addEventListener("mousedown", this.clickCanvas);
+		c.addEventListener('mousedown', this.clickCanvas);
 		this.context = c.getContext('2d');
 		this.drawPlayBtn();
+		this.drawLine(0, this.canvas_zero, this.canvas_width, this.canvas_zero, 'black');
+		this.context.fillStyle = 'black';
+		this.context.fillText('0',this.canvas_width-15, this.canvas_zero-5);
+		//this.context.fillText('20',this.canvas_width-15, this.canvas_zero-5-20*3);
 	},
 	unmounted () {
 		console.log('unmounted');
@@ -83,7 +88,8 @@ const app = createApp({
 			var x = e.pageX-10;
 			var y = e.pageY-10;
 			console.log(x,y);
-			if (25-17 < x && x < 25+17 && 20-17 < y && y < 20+17) {
+			var r = 25;
+			if (25-r < x && x < 25+r && 20-r < y && y < 20+r) {
 				switch (this.game_status) {
 					case 'pause':
 						this.drawPauseBtn();
@@ -101,7 +107,7 @@ const app = createApp({
 			if ('play' !== this.game_status) {
 				return;
 			}
-			var diff = [3,-3,2,-2,1,-1,0,0,1];
+			var diff = [3,-3,2,-2,1,-1,0,0,0.5];
 			var l = diff.length;
 			var oldStep = this.timeStep;
 			this.timeStep++;
@@ -114,12 +120,24 @@ const app = createApp({
 				diff.splice(diff_index, 1);
 				var newStep = this.timeStep;
 				var newPrice = stock.price;
-				var h = this.canvas_height;
+				var h = this.canvas_zero;
 				this.drawLine(oldStep*3, h-oldPrice*3, newStep*3, h-newPrice*3, stock.color);
 			}
+			var oldAsset = this.asset;
 			this.updateAsset();
 			this.updateProfit();
-			setTimeout(this.nextStep, 1*1000);
+			var newAsset = this.asset;
+			var point = (oldAsset-300)*2;
+			if (oldAsset < newAsset) {
+				var hh = (newAsset-oldAsset)*2;
+				this.context.fillStyle = '#aa0011';
+				this.context.fillRect(oldStep*3,this.canvas_zero-hh-point,3,hh);
+			} else if (oldAsset > newAsset) {
+				var hh = (oldAsset-newAsset)*2;
+				this.context.fillStyle = '#00aa11';
+				this.context.fillRect(oldStep*3,this.canvas_zero-point,3,hh);
+			}
+			setTimeout(this.nextStep, 5*100);
 		},
 		drawLine (x1,y1,x2,y2,color) {
 			this.context.beginPath();

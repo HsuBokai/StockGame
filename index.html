@@ -19,10 +19,15 @@
 		'action action';
 	grid-gap: 10px 10px;
 }
-#myCanvas {
+#canvas-price {
 	background-color: #cccccc;
 	width: 100%;
 	height: 100%;
+}
+#canvas-profit {
+	background-color: #cccccc;
+	width: 100%;
+	height: 150px;
 }
 .btn-next {
 	border-radius: 50%;
@@ -70,7 +75,7 @@
 	background-color: #00ff11;
 }
 .info-money {
-	font-size: 2rem;
+	font-size: 30px;
 }
 table {
 	border-top: 1px solid #ddd;
@@ -96,7 +101,7 @@ th {
 <div id="app">
 	<div class="grid-container">
 		<div id="GridPrice" class="grid-price">
-			<canvas id="myCanvas"></canvas>
+			<canvas id="canvas-price"></canvas>
 		</div>
 		<div class="grid-info">
 			<div class="info-money"> Money : $ {{money}} 萬元 </div>
@@ -127,6 +132,13 @@ th {
 				<div class="btn-buy" @click="doBuy(stock.name)">B:{{stock.price}}</div>
 				<div class="btn-sell" @click="doSell(stock.name)">S:{{stock.price - fee}}</div>
 			</div>
+			<div class="info-money">&nbsp;</div>
+			<div class="info-money">&nbsp;</div>
+			<div class="info-money"> 這 9 檔股票每天波動如下：</div>
+			<div class="info-money"> 其中有 3 檔股票會漲，漲幅分別為 +1、+2、+3</div>
+			<div class="info-money"> 其中有 3 檔股票會跌，跌幅分別為 -1、-2、-3</div>
+			<div class="info-money"> 其中有 2 檔股票不漲不跌</div>
+			<div class="info-money"> 最後 1 檔股票會漲 +0.5</div>
 		</div>
 	</div>
 </div>
