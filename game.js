@@ -7,38 +7,48 @@ const app = createApp({
 			stock_list : [
 				{
 					name : 'TSMC',
-					price : 50,
+					price : 55,
 					color : '#777777',
 				},
 				{
 					name : 'HTC',
-					price : 45,
+					price : 50,
 					color : '#5555ff',
 				},
 				{
 					name : 'MTK',
-					price : 40,
+					price : 45,
 					color : '#55cc55',
 				},
 				{
 					name : 'AAPL',
-					price : 35,
+					price : 40,
 					color : '#cc5555',
 				},
 				{
 					name : 'GOOG',
-					price : 30,
+					price : 35,
 					color : '#aaaa55',
 				},
 				{
 					name : 'FB',
-					price : 25,
+					price : 30,
 					color : '#cc55cc',
 				},
 				{
 					name : 'AMZN',
-					price : 20,
+					price : 25,
 					color : '#55cccc',
+				},
+				{
+					name : 'NFLX',
+					price : 20,
+					color : '#aaaaaa',
+				},
+				{
+					name : 'TSLA',
+					price : 15,
+					color : 'yellow',
 				},
 			],
 			hold_list : [],
@@ -65,27 +75,17 @@ const app = createApp({
 	},
 	methods: {
 		nextStep () {
+			var diff = [3,-3,2,-2,1,-1,0,0,1];
+			var l = diff.length;
 			var oldStep = this.timeStep;
 			this.timeStep++;
 			for (var i=0; i < this.stock_list.length; ++i) {
 				var stock = this.stock_list[i];
 				var oldPrice = stock.price;
-				var r = Math.random() * 7;
-				if(r < 1){
-					stock.price += 3;
-				} else if(r < 2){
-					stock.price += 2;
-				} else if(r < 3){
-					stock.price += 1;
-				} else if(r < 4){
-					stock.price += 1;
-				} else if(r < 5){
-					stock.price -= 1;
-				} else if(r < 6){
-					stock.price -= 2;
-				} else {
-					stock.price -= 3;
-				}
+				var r = Math.random() * (l - i);
+				diff_index = Math.floor(r);
+				stock.price += diff[diff_index];
+				diff.splice(diff_index, 1);
 				var newStep = this.timeStep;
 				var newPrice = stock.price;
 				var h = this.canvas_height;
@@ -93,7 +93,7 @@ const app = createApp({
 			}
 			this.updateAsset();
 			this.updateProfit();
-			setTimeout(this.nextStep, 1*1000);
+			if (this.timeStep < 100) setTimeout(this.nextStep, 1*1000);
 		},
 		drawLine (x1,y1,x2,y2,color) {
 			this.context.beginPath();
