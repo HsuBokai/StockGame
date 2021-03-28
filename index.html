@@ -100,7 +100,7 @@ th {
 		</div>
 		<div class="grid-info">
 			<div class="info-money"> Money : $ {{money}} 萬元 </div>
-			<table>
+			<table v-if="!hold_empty()">
 				<tbody>
 					<tr>
 						<th>Name</th>

@@ -76,6 +76,9 @@ const app = createApp({
 		console.log('unmounted');
 	},
 	methods: {
+		hold_empty () {
+			return 0 === this.hold_list.length;
+		},
 		clickCanvas (e) {
 			var x = e.pageX-10;
 			var y = e.pageY-10;
