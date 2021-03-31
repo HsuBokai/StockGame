@@ -87,7 +87,6 @@ const app = createApp({
 		clickCanvas (e) {
 			var x = e.pageX-10;
 			var y = e.pageY-10;
-			console.log(x,y);
 			var r = 25;
 			if (25-r < x && x < 25+r && 20-r < y && y < 20+r) {
 				switch (this.game_status) {
@@ -215,7 +214,8 @@ const app = createApp({
 			if (0 === hold.count) {
 				return 0;
 			} else {
-				return hold.cost_sum / hold.count;
+				var cc = hold.cost_sum / hold.count;
+				return cc.toFixed(2);
 			}
 		},
 		doBuy (stock_name) {
@@ -225,6 +225,9 @@ const app = createApp({
 			for (var i=0; i < this.stock_list.length; ++i) {
 				if (stock_name === this.stock_list[i].name) {
 					var p = this.stock_list[i].price;
+					if (p <= 0) {
+						return;
+					}
 					if (this.money < p) {
 						return;
 					}
@@ -259,6 +262,9 @@ const app = createApp({
 			for (var i=0; i < this.stock_list.length; ++i) {
 				if (stock_name === this.stock_list[i].name) {
 					var p = this.stock_list[i].price;
+					if (p <= 0) {
+						return;
+					}
 					break;
 				}
 			}
