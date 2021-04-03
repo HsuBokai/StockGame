@@ -7,71 +7,71 @@ const app = createApp({
 			stock_list : [
 				{
 					name : 'TSMC',
-					price : 55,
+					price : 110,
 					color : '#999999',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'HTC',
-					price : 50,
+					price : 100,
 					color : '#5555ff',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'MTK',
-					price : 45,
+					price : 90,
 					color : '#55cc55',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'AAPL',
-					price : 40,
+					price : 80,
 					color : '#cc5555',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'GOOG',
-					price : 35,
+					price : 70,
 					color : '#aaaa55',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'FB',
-					price : 30,
+					price : 60,
 					color : 'yellow',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'AMZN',
-					price : 25,
+					price : 50,
 					color : '#55cccc',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'NFLX',
-					price : 20,
+					price : 40,
 					color : '#cc55cc',
 					canBuy : true,
 					canSell : false,
 				},
 				{
 					name : 'TSLA',
-					price : 15,
+					price : 30,
 					color : '#555555',
 					canBuy : true,
 					canSell : false,
 				},
 			],
 			hold_list : [],
-			money: 300,
-			asset: 300,
+			money: 600,
+			asset: 600,
 			fee: 0,
 			canvas_width: 600,
 			canvas_height: 400,
@@ -124,7 +124,7 @@ const app = createApp({
 			if ('play' !== this.game_status) {
 				return;
 			}
-			var diff = [3,-3,2,-2,1,-1,0,0,0.5];
+			var diff = [6,-6,4,-4,2,-2,0,0,1];
 			var l = diff.length;
 			var oldStep = this.timeStep;
 			this.timeStep++;
@@ -138,19 +138,20 @@ const app = createApp({
 				var newStep = this.timeStep;
 				var newPrice = stock.price;
 				var h = this.canvas_zero;
-				this.drawLine(oldStep*3, h-oldPrice*3, newStep*3, h-newPrice*3, stock.color);
+				this.drawLine(oldStep*3, h-oldPrice*1, newStep*3, h-newPrice*1, stock.color);
 			}
 			var oldAsset = this.asset;
 			this.updateAsset();
 			this.updateProfit();
 			var newAsset = this.asset;
-			var point = (oldAsset-300)*2;
+			var unit = 1;
+			var point = (oldAsset-600)*unit;
 			if (oldAsset < newAsset) {
-				var hh = (newAsset-oldAsset)*2;
+				var hh = (newAsset-oldAsset)*unit;
 				this.context.fillStyle = '#aa0011';
 				this.context.fillRect(oldStep*3,this.canvas_zero-hh-point,3,hh);
 			} else if (oldAsset > newAsset) {
-				var hh = (oldAsset-newAsset)*2;
+				var hh = (oldAsset-newAsset)*unit;
 				this.context.fillStyle = '#00aa11';
 				this.context.fillRect(oldStep*3,this.canvas_zero-point,3,hh);
 			}
