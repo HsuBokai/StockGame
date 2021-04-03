@@ -9,46 +9,64 @@ const app = createApp({
 					name : 'TSMC',
 					price : 55,
 					color : '#999999',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'HTC',
 					price : 50,
 					color : '#5555ff',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'MTK',
 					price : 45,
 					color : '#55cc55',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'AAPL',
 					price : 40,
 					color : '#cc5555',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'GOOG',
 					price : 35,
 					color : '#aaaa55',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'FB',
 					price : 30,
 					color : 'yellow',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'AMZN',
 					price : 25,
 					color : '#55cccc',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'NFLX',
 					price : 20,
 					color : '#cc55cc',
+					canBuy : true,
+					canSell : false,
 				},
 				{
 					name : 'TSLA',
 					price : 15,
 					color : '#555555',
+					canBuy : true,
+					canSell : false,
 				},
 			],
 			hold_list : [],
@@ -204,6 +222,28 @@ const app = createApp({
 				}
 			}
 			this.asset = a;
+			for (var i=0; i < this.stock_list.length; ++i) {
+				var p = this.stock_list[i].price
+				if (p <= 0) {
+					this.stock_list[i].canBuy = false
+					this.stock_list[i].canSell = false
+					continue
+				}
+				if (this.money < p) {
+					this.stock_list[i].canBuy = false
+				} else {
+					this.stock_list[i].canBuy = true
+				}
+				for (var index = 0; index < this.hold_list.length; ++index) {
+					if (this.hold_list[index].name === this.stock_list[i].name) {
+						if (0 < this.hold_list[index].count) {
+							this.stock_list[i].canSell = true
+						} else {
+							this.stock_list[i].canSell = false
+						}
+					}
+				}
+			}
 		},
 		getProfit (index, p) {
 			var hold = this.hold_list[index];
