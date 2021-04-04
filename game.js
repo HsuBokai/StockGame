@@ -155,7 +155,12 @@ const app = createApp({
 				this.context.fillStyle = '#00aa11';
 				this.context.fillRect(oldStep*3,this.canvas_zero-point,3,hh);
 			}
-			setTimeout(this.nextStep, 5*100);
+			if (200 === this.timeStep) {
+				this.drawPlayBtn();
+				this.game_status = 'pause';
+			} else {
+				setTimeout(this.nextStep, 5*100);
+			}
 		},
 		drawLine (x1,y1,x2,y2,color) {
 			this.context.beginPath();
