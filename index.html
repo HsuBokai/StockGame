@@ -122,9 +122,25 @@ th {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 }
+#box {
+	width: 500px;
+	height: 400px;
+	background: white;
+	box-shadow: 0 0 10px black;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9999;
+	display: none;
+}
 </style>
 </head>
 <body>
+<div id="box">
+	<div id="chartContainer"></div>
+</div>
 <div id="app">
 	<div class="grid-container">
 		<div id="GridPrice" class="grid-price">
@@ -211,6 +227,7 @@ th {
 	</div>
 </div>
 <script src="https://unpkg.com/vue@next"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script type='text/javascript' src='game.js'></script>
 </body>
 </html>

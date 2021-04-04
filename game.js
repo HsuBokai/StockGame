@@ -158,6 +158,8 @@ const app = createApp({
 			if (200 === this.timeStep) {
 				this.drawPlayBtn();
 				this.game_status = 'pause';
+				this.showChart();
+				document.getElementById('box').style.display = 'block';
 			} else {
 				setTimeout(this.nextStep, 5*100);
 			}
@@ -332,6 +334,65 @@ const app = createApp({
 			this.hold_list[index].cost_avg = this.getCostAvg(index);
 			this.hold_list[index].profit = this.getProfit(index, p);
 			this.updateAsset();
+		},
+		showChart () {
+			var score = this.asset;
+			if (score < 100) score = 100;
+			if (1500 < score) score = 1500;
+			var cdf = 9;
+			var normal_dist = [];
+			for (var i = 100; i <= 1500; i+=20) {
+				var s = Math.exp(-Math.pow((i-822)/707, 2)) * 1.59;
+				var p = {
+					x: i,
+					y: s,
+				};
+				if (i < score) {
+					p.color = "rgba(0,100,280,0.5)";
+					cdf += s;
+				} else if (i < (score+20)) {
+					p.indexLabel = "You are here (better than " + cdf.toFixed(2) + "%)";
+					p.indexLabelFontWeight = "bolder";
+					p.indexLabelFontSize = 16;
+					p.indexLabelFontColor = "orangered";
+					p.color = "orangered";
+				}
+				normal_dist.push(p);
+			}
+			var chart = new CanvasJS.Chart("chartContainer", {
+				animationEnabled: true,
+				title:{
+					text: "Percentile Rank"
+				},
+				axisX:{
+					title: "Total Asset (仟元)",
+					valueFormatString: "#",
+					crosshair: {
+						enabled: true,
+						snapToDataPoint: true
+					}
+				},
+				axisY: {
+					title: "Distribution (%)",
+					valueFormatString: "##0.00",
+					gridThickness: 0,
+					crosshair: {
+						enabled: true,
+						snapToDataPoint: true,
+						labelFormatter: function(e) {
+							return CanvasJS.formatNumber(e.value, "##0.00");
+						}
+					}
+				},
+				data: [{
+					type: "column",
+					color: "rgba(128,128,128,0.5)",
+					xValueFormatString: "#",
+					yValueFormatString: "##0.00",
+					dataPoints: normal_dist,
+				}]
+			});
+			chart.render();
 		},
 	},
 });
