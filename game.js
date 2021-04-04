@@ -337,11 +337,11 @@ const app = createApp({
 		},
 		showChart () {
 			var score = this.asset;
-			if (score < 100) score = 100;
-			if (1500 < score) score = 1500;
-			var cdf = 9;
+			if (score < 0) score = 0;
+			if (1600 < score) score = 1600;
+			var cdf = 6;
 			var normal_dist = [];
-			for (var i = 100; i <= 1500; i+=20) {
+			for (var i = 0; i <= 1600; i+=20) {
 				var s = Math.exp(-Math.pow((i-822)/707, 2)) * 1.59;
 				var p = {
 					x: i,
